@@ -12,7 +12,7 @@ public class DataSourceConfiguration {
     public DataSource datasource() {
         return DataSourceBuilder.create()
                 .driverClassName("com.mysql.cj.jdbc.Driver")
-                .url("jdbc:mysql://localhost:3306/counter")
+                .url("jdbc:mysql://localhost:3306/knowledge_base")
                 .username("root")
                 .password("new_password")
                 .build();
