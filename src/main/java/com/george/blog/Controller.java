@@ -30,15 +30,12 @@ public class Controller {
 
     @PostMapping("/search")
     public ArrayList<Article> search(String searchTerm){
-        ArrayList<Article> out = new ArrayList<>();
-
-        return out;
+        return (ArrayList<Article>)DBHandler.searchByTerm(searchTerm);
     }
 
     @PostMapping("/select")
     public Article select(@RequestBody int id){
-        Article first = new Article(0, "", "", "");
-        return first;
+        return DBHandler.getArticleById(id);
     }
 
     @GetMapping("/view-all")
@@ -47,24 +44,31 @@ public class Controller {
     }
 
     @PostMapping("/save")
-    public int saveArticle(@RequestBody Article article){
-        int response = DBHandler.addArticle(article);
+    public boolean saveArticle(@RequestBody Article article){
+        int response = DBHandler.insertArticle(article);
         if(response > 0)
             counter++;
-        return response;
+        return response <= 0;
     }
 
     @PostMapping("/update")
-    public void updateArticle(@RequestBody Article article){
-
+    public boolean updateArticle(@RequestBody Article article){
+        int response = DBHandler.updateArticle(article);
+        return response <= 0;
     }
 
     @GetMapping("/create/{title}/{content}")
     public Article createArticle(@PathVariable String title, @PathVariable String content){
         Article article = new Article(counter, title, content, new Date().toString());
-        DBHandler.addArticle(article);
+        DBHandler.insertArticle(article);
         counter++;
         return article;
+    }
+
+    @GetMapping("/update/{content}")
+    public boolean updateArticle(@PathVariable String content){
+        int response = DBHandler.updateContent(counter - 1, content);
+        return response <= 0;
     }
 
 
