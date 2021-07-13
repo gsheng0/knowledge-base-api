@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBHandler {
-    public static String table = "articles";
     public static JdbcTemplate template;
     public static boolean ready = false;
 
@@ -52,11 +51,21 @@ public class DBHandler {
 
     public static Article getArticleById(int id){
         String command = "SELECT * FROM articles WHERE id = ?";
-        return template.query(command, new ArticleRowMapper()).get(0);
+        return template.queryForObject(command, new ArticleRowMapper(), id);
     }
 
     public static List<Article> searchByTerm(String term){
         String command = "SELECT * FROM articles WHERE MATCH (title, content) AGAINST (? IN NATURAL LANGUAGE MOD)";
-        return template.query(command, new ArticleRowMapper());
+        return template.query(command, new ArticleRowMapper(), term);
+    }
+
+    public static Article getMostRecentArticle(){
+        String command = "SELECT * FROM articles ORDER BY id DESC LIMIT 1";
+        return template.query(command, new ArticleRowMapper()).get(0);
+    }
+
+    public static int deleteById(int id){
+        String command = "DELETE FROM articles WHERE id = ?";
+        return template.update(command, id);
     }
 }

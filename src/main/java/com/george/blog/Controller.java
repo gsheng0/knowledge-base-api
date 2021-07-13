@@ -20,7 +20,7 @@ public class Controller {
     @PostConstruct
     public void init(){
         DBHandler.setTemplate(template);
-        counter = DBHandler.getAllArticles().size();
+        counter = DBHandler.getMostRecentArticle().getId() + 1;
     }
 
     @GetMapping("/")
@@ -33,7 +33,7 @@ public class Controller {
         return (ArrayList<Article>)DBHandler.searchByTerm(searchTerm);
     }
 
-    @PostMapping("/select")
+    @PostMapping("/get")
     public Article select(@RequestBody int id){
         return DBHandler.getArticleById(id);
     }
@@ -43,7 +43,7 @@ public class Controller {
         return (ArrayList<Article>)DBHandler.getAllArticles();
     }
 
-    @PostMapping("/save")
+    @PostMapping("/upload")
     public boolean saveArticle(@RequestBody Article article){
         int response = DBHandler.insertArticle(article);
         if(response > 0)
@@ -54,6 +54,24 @@ public class Controller {
     @PostMapping("/update")
     public boolean updateArticle(@RequestBody Article article){
         int response = DBHandler.updateArticle(article);
+        return response <= 0;
+    }
+
+    @PostMapping("/delete")
+    public boolean deleteArticle(@RequestBody int id){
+        int response = DBHandler.deleteById(id);
+        return response <= 0;
+    }
+
+    @PostMapping("/update/title")
+    public boolean updateTitle(@RequestBody int id, @RequestBody String title){
+        int response  = DBHandler.updateTitle(id, title);
+        return response <= 0;
+    }
+
+    @PostMapping("/update/content")
+    public boolean updateContent(@RequestBody int id, @RequestBody String content){
+        int response = DBHandler.updateContent(id, content);
         return response <= 0;
     }
 
