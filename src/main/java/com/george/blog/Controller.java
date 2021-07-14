@@ -2,6 +2,7 @@ package com.george.blog;
 
 import com.george.blog.components.Article;
 import com.george.blog.components.DBHandler;
+import com.george.blog.components.SearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +30,10 @@ public class Controller {
     }
 
     @PostMapping("/search")
-    public ArrayList<Article> search(String searchTerm){
-        return (ArrayList<Article>)DBHandler.searchByTerm(searchTerm);
+    public ArrayList<Article> search(@RequestBody String query){
+        System.out.println("SEARCH TERM: " + query);
+        System.out.println(query);
+        return (ArrayList<Article>)DBHandler.searchByTerm(query);
     }
 
     @PostMapping("/get")
@@ -44,7 +47,8 @@ public class Controller {
     }
 
     @PostMapping("/upload")
-    public boolean saveArticle(@RequestBody Article article){
+    public boolean uploadArticle(@RequestBody String content, @RequestBody String title){
+        Article article = new Article(counter, title, content, new Date().toString());
         int response = DBHandler.insertArticle(article);
         if(response > 0)
             counter++;

@@ -55,8 +55,8 @@ public class DBHandler {
     }
 
     public static List<Article> searchByTerm(String term){
-        String command = "SELECT * FROM articles WHERE MATCH (title, content) AGAINST (? IN NATURAL LANGUAGE MOD)";
-        return template.query(command, new ArticleRowMapper(), term);
+        String command = "SELECT * FROM articles WHERE MATCH (title, content) AGAINST (\"" + term + "\" IN NATURAL LANGUAGE MODE)";
+        return template.query(command, new ArticleRowMapper());
     }
 
     public static Article getMostRecentArticle(){
