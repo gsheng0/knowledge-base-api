@@ -2,7 +2,7 @@ package com.george.blog;
 
 import com.george.blog.components.Article;
 import com.george.blog.components.DBHandler;
-import com.george.blog.components.SearchQuery;
+import com.george.blog.components.UploadedArticle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +47,8 @@ public class Controller {
     }
 
     @PostMapping("/upload")
-    public boolean uploadArticle(@RequestBody String content, @RequestBody String title){
-        Article article = new Article(counter, title, content, new Date().toString());
+    public boolean uploadArticle(@RequestBody UploadedArticle uploadedArticle){
+        Article article = new Article(counter, uploadedArticle.getTitle(), uploadedArticle.getContent(), new Date().toString());
         int response = DBHandler.insertArticle(article);
         if(response > 0)
             counter++;
