@@ -64,6 +64,11 @@ public class DBHandler {
         return template.query(command, new ArticleRowMapper()).get(0);
     }
 
+    public static List<Article> getMostRecentArticles(int n){
+        String command = "SELECT * FROM articles ORDER BY id DESC LIMIT " + n;
+        return template.query(command, new ArticleRowMapper());
+    }
+
     public static int deleteById(int id){
         String command = "DELETE FROM articles WHERE id = ?";
         return template.update(command, id);

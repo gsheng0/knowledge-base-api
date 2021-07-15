@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -31,8 +32,6 @@ public class Controller {
 
     @PostMapping("/search")
     public ArrayList<Article> search(@RequestBody String query){
-        System.out.println("SEARCH TERM: " + query);
-        System.out.println(query);
         return (ArrayList<Article>)DBHandler.searchByTerm(query);
     }
 
@@ -77,6 +76,11 @@ public class Controller {
     public boolean updateContent(@RequestBody int id, @RequestBody String content){
         int response = DBHandler.updateContent(id, content);
         return response <= 0;
+    }
+
+    @PostMapping("/most-recent")
+    public ArrayList<Article> mostRecent(@RequestBody int num){
+        return (ArrayList<Article>)DBHandler.getMostRecentArticles(num);
     }
 
     @GetMapping("/create/{title}/{content}")
