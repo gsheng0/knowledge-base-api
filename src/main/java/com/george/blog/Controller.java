@@ -83,19 +83,5 @@ public class Controller {
         return (ArrayList<Article>)DBHandler.getMostRecentArticles(num);
     }
 
-    @GetMapping("/create/{title}/{content}")
-    public Article createArticle(@PathVariable String title, @PathVariable String content){
-        Article article = new Article(counter, title, content, new Date().toString());
-        DBHandler.insertArticle(article);
-        counter++;
-        return article;
-    }
-
-    @GetMapping("/update/{content}")
-    public boolean updateArticle(@PathVariable String content){
-        int response = DBHandler.updateContent(counter - 1, content);
-        return response <= 0;
-    }
-
 
 }
