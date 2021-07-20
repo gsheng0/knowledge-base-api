@@ -22,7 +22,7 @@ public class Controller {
     @PostConstruct
     public void init(){
         DBHandler.setTemplate(template);
-        counter = DBHandler.getMostRecentArticle().getId() + 1;
+        counter = DBHandler.getArticleCount() + 1;
     }
 
     @GetMapping("/")

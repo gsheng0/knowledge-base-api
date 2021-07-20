@@ -59,9 +59,9 @@ public class DBHandler {
         return template.query(command, new ArticleRowMapper());
     }
 
-    public static Article getMostRecentArticle(){
-        String command = "SELECT * FROM articles ORDER BY id DESC LIMIT 1";
-        return template.query(command, new ArticleRowMapper()).get(0);
+    public static int getArticleCount(){
+        String command = "SELECT count(id) FROM articles";
+        return template.queryForObject(command, Integer.class);
     }
 
     public static List<Article> getMostRecentArticles(int n){
